@@ -8,7 +8,7 @@ public class NumberGame {
     private static int correctCount = 0;
     private static int rounds = 1;
     private static final Random random = new Random();
-    private static Scanner scan = new Scanner(System.in);
+    private static final Scanner scan = new Scanner(System.in);
     public static int generateNumber()
     {
         return random.nextInt(100) + 1;
@@ -18,31 +18,46 @@ public class NumberGame {
         return random.nextInt(6) + 5;
     }
 
-    public static int getGuess()
+    public static String getGuess()
     {
         System.out.println("Guess a number between 1 and 100: ");
 
-        return scan.nextInt();
+        return scan.nextLine();
     }
 
-    public static boolean checkGuess(int guess, int random)
+    public static boolean checkGuess(String guess, int random)
     {
-        if(guess == random)
+        try
         {
-            System.out.println("Correct guess, the number is: " + guess);
-            correctCount();
-            return true;
+            int guessNo = Integer.parseInt(guess);
 
-        } else if(guess < random)
+            if(guessNo == random)
+            {
+                System.out.println("Correct guess, the number is: " + guess);
+                correctCount();
+                return true;
+
+            } else if (guessNo < 1 || guessNo > 100)
+            {
+                System.out.println("Please enter an integer between 1 and 100.");
+                return false;
+
+            }else if(guessNo < random)
+            {
+                System.out.println("Incorrect, "+guess + " is too low.");
+                return false;
+
+            } else {
+
+                System.out.println("Incorrect, "+guess + " is too high.");
+                return false;
+            }
+        } catch (Exception a)
         {
-            System.out.println("Incorrect, "+guess + " is too low.");
-            return false;
-
-        } else {
-
-            System.out.println("Incorrect, "+guess + " is too high.");
+            System.out.println("Please enter an integer.");
             return false;
         }
+
 
     }
 
@@ -61,6 +76,18 @@ public class NumberGame {
         System.out.println("        GAME OVER!          ");
     }
 
+    public static String playOrquit()
+    {
+        System.out.println("Enter \"p\" to play another round or enter \"q\" to quit game.");
+        String input = scan.nextLine();
+        if(input.equalsIgnoreCase("p") || input.equalsIgnoreCase("q")) {
+            return input;
+        } else
+        {
+            return "";
+        }
+    }
+
     public static void playGame()
     {
         int number = 0;
@@ -71,7 +98,7 @@ public class NumberGame {
         while(number < guessesInitial)
         {
             System.out.println("You have " + guesses + " attempts!");
-            int guess = getGuess();
+            String guess = getGuess();
             if(checkGuess(guess,random))
             {
                 anotherRound();
@@ -91,8 +118,12 @@ public class NumberGame {
 
     public static void anotherRound()
     {
-        System.out.println("Enter \"p\" to play another round or enter \"q\" to quit game.");
-        String input = scan.next();
+       String input = "";
+
+       while (input.equalsIgnoreCase(""))
+       {
+           input = playOrquit();
+       }
 
         if(input.equalsIgnoreCase("q"))
         {
@@ -114,6 +145,7 @@ public class NumberGame {
             }
         }
     }
+
 
     public static void main(String[] args) {
         System.out.println("Welcome to the Number Game!");
