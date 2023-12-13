@@ -8,21 +8,35 @@ public class StudentGradeCalculator {
 
     private static final Scanner read = new Scanner(System.in);
     private static final List<String> subjects = new ArrayList<>();
+    private static final List<Integer> marks = new ArrayList<>();
+    private static int numberSubjects = 0;
+    private static int sum = 0;
+    private static double average = 0;
+    private static String grade = "";
     private static int getNoOfSubjects()
     {
-        System.out.println("Enter total number of subjects done: ");
-        return read.nextInt();
+        int subjects = 0;
+        while (subjects < 1 || subjects > 10) {
+            System.out.println("Enter total number of subjects done (maximum number of subjects is 10): ");
+            subjects = read.nextInt();
+        }
+        return subjects;
     }
 
-    private static int getSubjects()
+    public int getNumberSubjects()
+    {
+        return numberSubjects;
+    }
+
+    private static int inputSubjects()
     {
         int count = 1;
-        int numberSubjects = getNoOfSubjects();
+        numberSubjects = getNoOfSubjects();
 
         while(count < numberSubjects + 1)
         {
             System.out.println("Enter subject " + count + ": ");
-            String subject = read.next();
+            String subject = read.next().toUpperCase();
             subjects.add(subject);
             count++;
         }
@@ -35,15 +49,21 @@ public class StudentGradeCalculator {
 
         for(String sub : subjects)
         {
-            System.out.println("Enter mark for " + sub + ": ");
-            int mark = read.nextInt();
+            int mark = -1;
+            while (mark < 0 || mark > 100)
+            {
+                System.out.println("Enter mark for " + sub + " (0 - 100): ");
+                mark = read.nextInt();
+                marks.add(mark);
+            }
             sum+=mark;
         }
         return sum;
     }
 
-    private static String getGrade(double average)
+    private static String checkGrade(double average)
     {
+
         if(average >= 90 && average <= 100)
         {
             return "A+";
@@ -74,25 +94,57 @@ public class StudentGradeCalculator {
         }else if(average >= 40 && average <= 49)
         {
             return "E";
-        }else
+        }else if(average <= 39)
         {
             return "F";
         }
+        return "Error getting grade.";
     }
-    private static void printResults(int sum, int numberSubjects)
+    private static void getResults(int sum, int numberSubjects)
     {
-        double average = (double) sum /numberSubjects;
-        System.out.println("Total sum: " + sum);
-        System.out.println("Average percentage: " + average);
+        average = (double) sum /numberSubjects;
+//        System.out.println("Total sum: " + sum);
+//        System.out.println("Average percentage: " + Math.round(average * 100) / 100);
 
-        String grade = getGrade(average);
-        System.out.println("Overall grade obtained: " + grade);
+        grade = checkGrade(average);
+//        System.out.println("Overall grade obtained: " + grade);
     }
 
+    public int getSum()
+    {
+        return sum;
+    }
+
+    public double getAverage()
+    {
+        return average;
+    }
+
+    public String getGrade()
+    {
+        return grade;
+    }
+
+    public List<String> getSubjects()
+    {
+        return subjects;
+    }
+
+    public List<Integer> getMarks()
+    {
+        return marks;
+    }
     public static void main(String[] args) {
 
-        int numberSubjects = getSubjects();
-        int sum = getSubjectMarks();
-        printResults(sum, numberSubjects);
+        int numberSubjects = inputSubjects();
+        sum = getSubjectMarks();
+        getResults(sum, numberSubjects);
+
+        GradeTable table = new GradeTable();
+//        table.setVisible(true);
+        table.drawTable();
+
     }
+
+
 }
