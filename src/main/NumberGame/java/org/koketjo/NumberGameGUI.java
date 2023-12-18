@@ -11,7 +11,7 @@ public class NumberGameGUI extends JFrame {
     private static int rounds = 1;
     private static final Random random = new Random();
     private static int numberOfGuesses = getNumberOfGuesses();
-    private static int randomNumber = 5;
+    private static int randomNumber = generateNumber();
     private static boolean anotherRound = false;
     private final JLabel infoLabel;
     private final JTextField guessTextField;

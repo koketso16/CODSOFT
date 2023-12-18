@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/NumberGame/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/StudentGradeCalculator/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/ATMInterface/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/CurrencyConverter/java" isTestSource="false" />
     </content>
   </component>
 </module>
