@@ -209,7 +209,8 @@ public class GradeCalculator extends Component {
         return "Error getting grade.";
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
