@@ -11,50 +11,59 @@ import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class CurrencyConverter {
-    private static final String API_KEY = "YOUR_API_KEY"; // Replace with your API key
+    private static final Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        // Step 1: Currency Selection
+    private static String getBaseCurrency()
+    {
         System.out.print("Enter the base currency code (e.g., USD): ");
-        String baseCurrency = scanner.nextLine();
-
+        return scanner.nextLine();
+    }
+    private static String getTargetCurrency() {
         System.out.print("Enter the target currency code (e.g., EUR): ");
-        String targetCurrency = scanner.nextLine();
-
-        // Step 2: Currency Rates
-        BigDecimal exchangeRate = getExchangeRate(baseCurrency, targetCurrency);
-
-        // Step 3: Amount Input
-        System.out.print("Enter the amount to convert: ");
-        BigDecimal amountToConvert = scanner.nextBigDecimal();
-
-        // Step 4: Currency Conversion
-        BigDecimal convertedAmount = convertCurrency(amountToConvert, exchangeRate);
-
-        // Step 5: Display Result
-        System.out.println("Converted Amount: " + convertedAmount + " " + targetCurrency);
-
-        scanner.close();
+        return scanner.nextLine();
     }
 
-    private static BigDecimal getExchangeRate(String baseCurrency, String targetCurrency) {
-        String apiUrl = "https://open.er-api.com/v6/latest/" + baseCurrency;
-        HttpResponse<JsonNode> response = Unirest.get(apiUrl)
-                .header("Accept", "application/json")
-                .queryString("apikey", API_KEY)
-                .asJson();
+    private static BigDecimal getAmount()
+    {
+        System.out.print("Enter the amount to convert: ");
+        return scanner.nextBigDecimal();
 
-        JsonObject rates = JsonParser.parseString(response.getBody().toString()).getAsJsonObject().getAsJsonObject("rates");
-        BigDecimal exchangeRate = rates.getAsJsonPrimitive(targetCurrency).getAsBigDecimal();
+    }
 
-        System.out.println("Exchange Rate: 1 " + baseCurrency + " = " + exchangeRate + " " + targetCurrency);
-
-        return exchangeRate;
+    private static void displayAmount(BigDecimal convertedAmount, String targetCurrency)
+    {
+        System.out.println("Converted Amount: " + convertedAmount + " " + targetCurrency);
     }
 
     private static BigDecimal convertCurrency(BigDecimal amount, BigDecimal exchangeRate) {
         return amount.multiply(exchangeRate).setScale(2, RoundingMode.HALF_UP);
     }
+
+    public static void main(String[] args) {
+
+        System.out.println("Welcome to my Currency Converter!");
+
+        String baseCurrency = "";
+
+        while (baseCurrency.isEmpty()) {
+
+            baseCurrency = getBaseCurrency().toUpperCase();
+
+            String targetCurrency = getTargetCurrency().toUpperCase();
+
+            FetchFromAPI fromAPI = new FetchFromAPI();
+            BigDecimal exchangeRate = fromAPI.fetchExchangeRate(baseCurrency, targetCurrency);
+
+            BigDecimal amountToConvert = getAmount();
+
+            BigDecimal convertedAmount = convertCurrency(amountToConvert, exchangeRate);
+
+            displayAmount(convertedAmount, targetCurrency);
+        }
+        scanner.close();
+    }
+
+
+
+
 }

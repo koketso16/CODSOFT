@@ -6,25 +6,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GradeCalculator extends Component {
-    private JFrame mainFrame;
+    private final JFrame mainFrame;
     private int totalSubjects;
-    private JTextField totalSubjectsField;
-    private JButton submitTotalSubjectsButton;
+    private final JTextField totalSubjectsField;
 
     private JFrame inputFrame;
-    private JTextField[] subjectNameFields;
     private JTextField[] subjectMarkFields;
-    private JButton submitMarksButton;
 
     private JFrame resultFrame;
-    private JButton okButton;
+    private static double totalMarks = 0;
 
     public GradeCalculator() {
         // Main frame to get total subjects
         mainFrame = new JFrame("Welcome to the Grade Calculator!");
         totalSubjectsField = new JTextField(10);
         totalSubjectsField.setFont(new Font("Arial",Font.BOLD,18));
-        submitTotalSubjectsButton = new JButton("Submit");
+        JButton submitTotalSubjectsButton = new JButton("Submit");
         submitTotalSubjectsButton.setFont(new Font("Arial",Font.BOLD,18));
         submitTotalSubjectsButton.addActionListener(new ActionListener() {
             @Override
@@ -55,7 +52,7 @@ public class GradeCalculator extends Component {
         inputFrame.setSize(new Dimension(500,500));
         inputFrame.setLayout(new GridLayout(totalSubjects + 1, 3));
 
-        subjectNameFields = new JTextField[totalSubjects];
+        JTextField[] subjectNameFields = new JTextField[totalSubjects];
         subjectMarkFields = new JTextField[totalSubjects];
 
         for (int i = 0; i < totalSubjects; i++) {
@@ -70,7 +67,7 @@ public class GradeCalculator extends Component {
             inputFrame.add(subjectMarkFields[i]);
         }
 
-        submitMarksButton = new JButton("Submit");
+        JButton submitMarksButton = new JButton("Submit");
         submitMarksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,7 +93,7 @@ public class GradeCalculator extends Component {
         resultFrame = new JFrame("Goodbye");
         Box resultBox = Box.createVerticalBox(); // Use Box to easily manage vertical alignment
 
-        double totalMarks = 0;
+
         for (int i = 0; i < totalSubjects; i++) {
             String markText = subjectMarkFields[i].getText();
             double mark = Double.parseDouble(markText);
@@ -108,41 +105,48 @@ public class GradeCalculator extends Component {
 
         JPanel customPanel = new JPanel();
         customPanel.setLayout(new BoxLayout(customPanel, BoxLayout.Y_AXIS));
-        JLabel customLabel = new JLabel("Average mark: " + average);
-        JLabel me = new JLabel( "\nOverall grade obtained: " + grade);
-        customLabel.setFont(new Font("Arial", Font.BOLD, 15));
-        customLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        me.setFont(new Font("Arial", Font.BOLD, 15));
-        me.setAlignmentX(Component.CENTER_ALIGNMENT);
-        customPanel.add(customLabel);
-//        customPanel.add(me);
+        JLabel custom = new JLabel("Total Marks: " + totalMarks);
+        JLabel customLabel = new JLabel("Average Percentage: " + average + "%");
+        JLabel me = new JLabel( "\nGrade Obtained: " + grade);
 
-        // Show the custom JOptionPane
+        customLabel.setFont(new Font("Calibri", Font.BOLD, 20));
+        customLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        custom.setFont(new Font("Calibri", Font.BOLD, 20));
+        custom.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        me.setFont(new Font("Calibri", Font.BOLD, 20));
+        me.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        customPanel.add(customLabel);
+
+        JOptionPane.showMessageDialog(this, custom, "Final results", JOptionPane.INFORMATION_MESSAGE);
         JOptionPane.showMessageDialog(this, customPanel, "Final results", JOptionPane.INFORMATION_MESSAGE);
         JOptionPane.showMessageDialog(this, me, "Final results", JOptionPane.INFORMATION_MESSAGE);
 
 
+        JLabel label = new JLabel("\uD83D\uDCDA");
         JLabel label1 = new JLabel("Thank you for using our Grade Calculator!");
-        label1.setFont(new Font("Arial",Font.ITALIC | Font.BOLD,18));
+        label1.setFont(new Font("Calibri",Font.BOLD ,20));
         JLabel label2 = new JLabel( "\uD83D\uDCDA");
 
         JLabel label3 = new JLabel("Good luck with your academic endeavors!");
-        label3.setFont(new Font("Arial",Font.ITALIC | Font.BOLD,18));
+        label3.setFont(new Font("Calibri",Font.BOLD,20));
         JLabel label4 = new JLabel( "\uD83D\uDCDA");
 
-        // Set alignment for labels
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
         label1.setAlignmentX(Component.CENTER_ALIGNMENT);
         label2.setAlignmentX(Component.CENTER_ALIGNMENT);
         label3.setAlignmentX(Component.CENTER_ALIGNMENT);
         label4.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        resultBox.add(label);
         resultBox.add(label1);
         resultBox.add(label2);
         resultBox.add(label3);
         resultBox.add(label4);
-        resultBox.add(Box.createRigidArea(new Dimension(0, 10))); // Add some space between labels and button
-
-        okButton = new JButton("OK");
+        resultBox.add(Box.createRigidArea(new Dimension(0, 10)));
+        JButton okButton = new JButton("OK");
         okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         okButton.addActionListener(new ActionListener() {
@@ -156,7 +160,7 @@ public class GradeCalculator extends Component {
         resultBox.add(okButton);
         resultFrame.add(resultBox);
 
-        resultFrame.setSize(500, 150);
+        resultFrame.setSize(500, 180);
         resultFrame.setLocationRelativeTo(null);
         resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         resultFrame.setVisible(true);
