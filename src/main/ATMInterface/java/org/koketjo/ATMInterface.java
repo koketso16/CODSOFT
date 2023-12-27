@@ -5,30 +5,63 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ATMInterface {
+import static org.koketjo.UserAccount.*;
+
+public class ATMInterface extends Component {
     private JFrame frame;
     private JTextField balanceField;
 
     public ATMInterface() {
-        frame = new JFrame("ATM Interface");
+        frame = new JFrame();
         balanceField = new JTextField(15);
-        balanceField.setEditable(false);
+        balanceField.setText(String.valueOf(getBankBalance()));
+
+
+        JLabel welcome = new JLabel("                 Welcome to KayATM  ");
+        welcome.setFont(new Font("Calibri", Font.BOLD, 20));
+        welcome.setForeground(Color.WHITE);
+        welcome.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel well = new JLabel("What would you like to do?");
+        well.setFont(new Font("Calibri", Font.BOLD, 20));
+        well.setForeground(Color.WHITE);
+        well.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JButton withdrawButton = new JButton("Withdraw");
+        withdrawButton.setFont(new Font("Calibri", Font.BOLD, 18));
+        withdrawButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        withdrawButton.setBackground(Color.blue);
+        withdrawButton.setForeground(Color.WHITE);
+
         JButton depositButton = new JButton("Deposit");
+        depositButton.setFont(new Font("Calibri", Font.BOLD, 18));
+        depositButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        depositButton.setBackground(Color.blue);
+        depositButton.setForeground(Color.WHITE);
+
         JButton checkBalanceButton = new JButton("Check Balance");
+        checkBalanceButton.setFont(new Font("Calibri", Font.BOLD, 18));
+        checkBalanceButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        checkBalanceButton.setBackground(Color.blue);
+        checkBalanceButton.setForeground(Color.WHITE);
+
+        JButton quitButton = new JButton("Quit");
+        quitButton.setFont(new Font("Calibri", Font.BOLD, 18));
+        quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        quitButton.setBackground(Color.blue);
+        quitButton.setForeground(Color.WHITE);
 
         withdrawButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleWithdraw();
+                withdraw();
             }
         });
 
         depositButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleDeposit();
+                deposit();
             }
         });
 
@@ -39,37 +72,64 @@ public class ATMInterface {
             }
         });
 
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quitATM();
+            }
+        });
+
         JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
-        panel.add(new JLabel("Balance:"));
-        panel.add(balanceField);
+        panel.setBackground(Color.darkGray);
+        panel.add(welcome);
+        panel.add(well);
         panel.add(withdrawButton);
         panel.add(depositButton);
         panel.add(checkBalanceButton);
+        panel.add(quitButton);
 
         frame.getContentPane().add(BorderLayout.CENTER, panel);
-        frame.setSize(300, 150);
+        frame.setSize(600, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    private void handleWithdraw() {
-        String withdrawAmount = JOptionPane.showInputDialog(frame, "Enter Withdraw Amount:");
-        if (withdrawAmount != null && !withdrawAmount.isEmpty()) {
-            double amount = Double.parseDouble(withdrawAmount);
-            updateBalance(-amount);
+    private void quitATM() {
+
+        JLabel quitLabel = new JLabel("Thank you for using KayATM, Until next time!");
+        quitLabel.setFont(new Font("Arial", Font.BOLD, 21));
+        quitLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JOptionPane.showMessageDialog(this,quitLabel,"Goodbye!",JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
+    }
+
+    private void withdraw() {
+        String amount = JOptionPane.showInputDialog(frame, "Enter Withdraw Amount:");
+        JLabel label;
+
+        if(Double.parseDouble(amount) > getBankBalance())
+        {
+            label = new JLabel("Withdrawal Declined! - Your balance is less than the required amount.");
+            JOptionPane.showMessageDialog(this,label,"Declined",JOptionPane.INFORMATION_MESSAGE);
+
+        } else
+        {
+            label = new JLabel("Withdrawal Approved! - Please take your money.");
+            JOptionPane.showMessageDialog(this,label,"Approved",JOptionPane.INFORMATION_MESSAGE);
+            setBankBalance(getBankBalance() - Double.parseDouble(amount));
         }
     }
 
-    private void handleDeposit() {
-        String depositAmount = JOptionPane.showInputDialog(frame, "Enter Deposit Amount:");
-        if (depositAmount != null && !depositAmount.isEmpty()) {
-            double amount = Double.parseDouble(depositAmount);
-            updateBalance(amount);
-        }
+    private void deposit() {
+        String amount = JOptionPane.showInputDialog(frame, "Enter Deposit Amount:");
+        setBankBalance(getBankBalance() + Double.parseDouble(amount));
+        JLabel label = new JLabel("R" + amount + "0 successfully deposited in your account.");
+        JOptionPane.showMessageDialog(this,label,"Deposited",JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void checkBalance() {
-        JOptionPane.showMessageDialog(frame, "Current Balance: $" + balanceField.getText(), "Balance", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, "Current Balance: R " + balanceField.getText(), "Balance", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void updateBalance(double amount) {
