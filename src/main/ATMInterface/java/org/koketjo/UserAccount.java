@@ -1,6 +1,8 @@
 package org.koketjo;
 
-public class UserAccount {
+import java.awt.*;
+
+public class UserAccount extends Component {
 
     private static double bankBalance = 1577.23;
 

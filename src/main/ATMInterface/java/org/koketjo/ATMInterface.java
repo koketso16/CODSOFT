@@ -1,21 +1,18 @@
 package org.koketjo;
 
 import javax.swing.*;
+import javax.swing.text.IconView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static org.koketjo.UserAccount.*;
-
-public class ATMInterface extends Component {
-    private JFrame frame;
-    private JTextField balanceField;
-
+public class ATMInterface extends UserAccount {
+    private final JFrame frame;
     public ATMInterface() {
-        frame = new JFrame();
-        balanceField = new JTextField(15);
-        balanceField.setText(String.valueOf(getBankBalance()));
 
+        UIManager.put("Panel.background", Color.CYAN);
+        frame = new JFrame();
+//        balanceField = new JTextField(15);
 
         JLabel welcome = new JLabel("                 Welcome to KayATM  ");
         welcome.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -98,7 +95,7 @@ public class ATMInterface extends Component {
     private void quitATM() {
 
         JLabel quitLabel = new JLabel("Thank you for using KayATM, Until next time!");
-        quitLabel.setFont(new Font("Arial", Font.BOLD, 21));
+        quitLabel.setFont(new Font("Arial", Font.BOLD, 18));
         quitLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         JOptionPane.showMessageDialog(this,quitLabel,"Goodbye!",JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
@@ -115,8 +112,16 @@ public class ATMInterface extends Component {
 
         } else
         {
-            label = new JLabel("Withdrawal Approved! - Please take your money.");
+            ImageIcon icon = new ImageIcon("src/main/ATMInterface/java/org/koketjo/money.jpg"); // Replace with the actual path to your image
+
+            Image image = icon.getImage().getScaledInstance(100, 100, Image.SCALE_AREA_AVERAGING);
+            ImageIcon resizedIcon = new ImageIcon(image);
+
+            label = new JLabel(resizedIcon, SwingConstants.TRAILING);
+            label.setText("Withdrawal Approved! - Please take your money.");
             JOptionPane.showMessageDialog(this,label,"Approved",JOptionPane.INFORMATION_MESSAGE);
+
+
             setBankBalance(getBankBalance() - Double.parseDouble(amount));
         }
     }
@@ -124,20 +129,13 @@ public class ATMInterface extends Component {
     private void deposit() {
         String amount = JOptionPane.showInputDialog(frame, "Enter Deposit Amount:");
         setBankBalance(getBankBalance() + Double.parseDouble(amount));
-        JLabel label = new JLabel("R" + amount + "0 successfully deposited in your account.");
+        JLabel label = new JLabel("R" + amount + " successfully deposited in your account.");
         JOptionPane.showMessageDialog(this,label,"Deposited",JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void checkBalance() {
-        JOptionPane.showMessageDialog(frame, "Current Balance: R " + balanceField.getText(), "Balance", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, "Current Balance: R " + getBankBalance(), "Balance", JOptionPane.INFORMATION_MESSAGE);
     }
-
-    private void updateBalance(double amount) {
-        double currentBalance = Double.parseDouble(balanceField.getText());
-        currentBalance += amount;
-        balanceField.setText(String.format("%.2f", currentBalance));
-    }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -147,3 +145,25 @@ public class ATMInterface extends Component {
         });
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
