@@ -1,7 +1,6 @@
 package org.koketjo;
 
 import javax.swing.*;
-import javax.swing.text.IconView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +10,16 @@ public class ATMInterface extends UserAccount {
     public ATMInterface() {
 
         UIManager.put("Panel.background", Color.CYAN);
+
+        Font defaultFont = new JLabel().getFont();
+        Font newFont = UIManager.getFont("OptionPane.messageFont");
+        if (newFont == null) {
+            newFont = defaultFont;
+        }
+        newFont = newFont.deriveFont(20f);
+        UIManager.put("OptionPane.messageFont", newFont);
+
         frame = new JFrame();
-//        balanceField = new JTextField(15);
 
         JLabel welcome = new JLabel("                 Welcome to KayATM  ");
         welcome.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -102,39 +109,78 @@ public class ATMInterface extends UserAccount {
     }
 
     private void withdraw() {
-        String amount = JOptionPane.showInputDialog(frame, "Enter Withdraw Amount:");
-        JLabel label;
+        Font inputFont = new Font("Dialog", Font.PLAIN, 18);
 
-        if(Double.parseDouble(amount) > getBankBalance())
-        {
-            label = new JLabel("Withdrawal Declined! - Your balance is less than the required amount.");
-            JOptionPane.showMessageDialog(this,label,"Declined",JOptionPane.INFORMATION_MESSAGE);
+        JTextField amountField = new JTextField();
+        amountField.setFont(inputFont);
 
-        } else
-        {
+        Object[] message = {
+                "Enter Withdrawal Amount:", amountField
+        };
+
+        int option = JOptionPane.showConfirmDialog(frame, message, "Withdraw", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) {
+            String amount = amountField.getText();
+            JLabel label;
+
+            if (Double.parseDouble(amount) > getBankBalance()) {
+                label = new JLabel("Withdrawal Declined! - Your balance is less than the required amount.");
+                label.setFont(new Font("Arial", Font.BOLD, 18));
+                JOptionPane.showMessageDialog(this, label, "Declined", JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                ImageIcon icon = new ImageIcon("src/main/ATMInterface/java/org/koketjo/money.jpg"); // Replace with the actual path to your image
+
+                Image image = icon.getImage().getScaledInstance(100, 100, Image.SCALE_AREA_AVERAGING);
+                ImageIcon resizedIcon = new ImageIcon(image);
+
+                label = new JLabel(resizedIcon, SwingConstants.TRAILING);
+                label.setText("Withdrawal Approved! - Please take your money.");
+                label.setFont(new Font("Arial", Font.BOLD, 18));
+
+                JOptionPane.showMessageDialog(this, label, "Approved", JOptionPane.INFORMATION_MESSAGE);
+
+                setBankBalance(getBankBalance() - Double.parseDouble(amount));
+            }
+        }
+    }
+
+    private void deposit() {
+        Font inputFont = new Font("Dialog", Font.PLAIN, 18);
+
+        JTextField amountField = new JTextField();
+        amountField.setFont(inputFont);
+
+        Object[] message = {
+                "Enter Deposit Amount:", amountField
+        };
+
+        int option = JOptionPane.showConfirmDialog(frame, message, "Deposit", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) {
+            String amount = amountField.getText();
+            setBankBalance(getBankBalance() + Double.parseDouble(amount));
+
             ImageIcon icon = new ImageIcon("src/main/ATMInterface/java/org/koketjo/money.jpg"); // Replace with the actual path to your image
 
             Image image = icon.getImage().getScaledInstance(100, 100, Image.SCALE_AREA_AVERAGING);
             ImageIcon resizedIcon = new ImageIcon(image);
 
-            label = new JLabel(resizedIcon, SwingConstants.TRAILING);
-            label.setText("Withdrawal Approved! - Please take your money.");
-            JOptionPane.showMessageDialog(this,label,"Approved",JOptionPane.INFORMATION_MESSAGE);
+            JLabel label = new JLabel(resizedIcon, SwingConstants.TRAILING);
+            label.setFont(new Font("Arial", Font.BOLD, 18));
+            label.setText("Please put notes in ATM slot.");
+            JOptionPane.showMessageDialog(this, label, "Insert notes", JOptionPane.INFORMATION_MESSAGE);
 
+            JLabel label2 = new JLabel("R" + amount + " successfully deposited in your account.");
+            label2.setFont(new Font("Arial", Font.BOLD, 18));
 
-            setBankBalance(getBankBalance() - Double.parseDouble(amount));
+            JOptionPane.showMessageDialog(this, label2, "Deposited", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    private void deposit() {
-        String amount = JOptionPane.showInputDialog(frame, "Enter Deposit Amount:");
-        setBankBalance(getBankBalance() + Double.parseDouble(amount));
-        JLabel label = new JLabel("R" + amount + " successfully deposited in your account.");
-        JOptionPane.showMessageDialog(this,label,"Deposited",JOptionPane.INFORMATION_MESSAGE);
-    }
-
     private void checkBalance() {
-        JOptionPane.showMessageDialog(frame, "Current Balance: R " + getBankBalance(), "Balance", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, "Current Balance: R" + getBankBalance(), "Balance", JOptionPane.INFORMATION_MESSAGE);
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

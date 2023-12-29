@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class UserAccount extends Component {
 
-    private static double bankBalance = 1577.23;
+    private static double bankBalance = 1500.55;
 
     public static void setBankBalance(double amount)
     {
