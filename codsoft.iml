@@ -2,13 +2,13 @@
 <module version="4">
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$" dumb="true">
-      <sourceFolder url="file://$MODULE_DIR$/Projects/src/main/ATM/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Projects/src/main/CurrencyConverter/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Projects/src/main/NumberGame/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Projects/src/main/StudentGradeCalculator/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Projects/src/main/StudentManagementSystem/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/ATM/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/ATMInterface/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/CurrencyConverter/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/CurrencyConverter/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/NumberGame/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/StudentGradeCalculator/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/StudentManagementSystem/java" isTestSource="false" />
     </content>
   </component>
 </module>

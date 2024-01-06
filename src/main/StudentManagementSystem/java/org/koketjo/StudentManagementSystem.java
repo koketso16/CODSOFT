@@ -20,7 +20,7 @@ public class StudentManagementSystem extends Application{
 
         GridPane grid = new GridPane();
 
-        Image backgroundImage = new Image("file:Projects/src/main/StudentManagementSystem/java/org/koketjo/data-storage.jpg");
+        Image backgroundImage = new Image("file:src/main/StudentManagementSystem/java/org/koketjo/data-storage.jpg");
 
         BackgroundImage background = new BackgroundImage(
                 backgroundImage,
