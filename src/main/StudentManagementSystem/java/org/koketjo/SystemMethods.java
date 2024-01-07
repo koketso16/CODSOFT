@@ -148,25 +148,37 @@ public class SystemMethods {
 
         submitButton.setOnAction(a ->
         {
-            Student student = new Student(nameTextField.getText(), surnameTextField.getText(), genderComboBox.getValue(), String.valueOf(dobTextField.getValue()), gradeTextField.getText(), rollTextField.getText(), emailTextField.getText());
-            students.add(student);
-            writeData(students);
-            students.clear();
+            try {
 
-            submitted.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 20;");
-            submitted.setText("Successfully added Student!");
+                if (nameTextField.getText().isEmpty() || surnameTextField.getText().isEmpty() ||
+                        genderComboBox.getValue() == null || dobTextField.getValue() == null ||
+                        gradeTextField.getText().isEmpty() || rollTextField.getText().isEmpty() ||
+                        emailTextField.getText().isEmpty()) {
+                    throw new IllegalArgumentException("All fields must be filled out.");
+                }
+                Student student = new Student(nameTextField.getText(), surnameTextField.getText(), genderComboBox.getValue(), String.valueOf(dobTextField.getValue()), gradeTextField.getText(), rollTextField.getText(), emailTextField.getText());
+                students.add(student);
+                writeData(students);
+                students.clear();
 
-            Button ok = new Button("OK");
-            ok.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+                submitted.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 20;");
+                submitted.setText("Successfully added Student!");
 
-            ok.setOnAction(b ->
+                Button ok = new Button("OK");
+                ok.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+
+                ok.setOnAction(b ->
+                {
+                    stage.close();
+                });
+
+                details.add(ok, 1, 1700);
+            } catch (Exception e)
             {
-                stage.close();
-            });
-
-            details.add(ok, 1, 1700);
+                submitted.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18;");
+                submitted.setText("Error: " + e.getMessage());
+            }
         });
-
 
     }
 
@@ -224,8 +236,12 @@ public class SystemMethods {
 
         removeButton.setOnAction(a ->
         {
-
             try {
+
+                if (nameTextField.getText().isEmpty() || surnameTextField.getText().isEmpty() ||
+                        rollTextField.getText().isEmpty()) {
+                    throw new IllegalArgumentException("All fields must be filled out.");
+                }
                 List<String> data = readData();
                 assert data != null;
                 List<String> updatedLines = data.stream()
@@ -234,23 +250,26 @@ public class SystemMethods {
 
                 Files.write(Path.of(filePath), updatedLines, StandardOpenOption.TRUNCATE_EXISTING);
 
+
+                submitted.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18;");
+                submitted.setText("Successfully removed Student!");
+
+                Button ok = new Button("OK");
+                ok.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+
+                ok.setOnAction(b ->
+                {
+                    stage.close();
+                });
+
+                details.add(ok, 1, 1700);
+
             } catch (Exception e)
             {
-                System.out.println("Error removing student.");
+                submitted.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18;");
+                submitted.setText("Error: " + e.getMessage());
             }
 
-            submitted.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18;");
-            submitted.setText("Successfully removed Student!");
-
-            Button ok = new Button("OK");
-            ok.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-
-            ok.setOnAction(b ->
-            {
-                stage.close();
-            });
-
-            details.add(ok, 1, 1700);
         });
     }
 
@@ -287,133 +306,160 @@ public class SystemMethods {
 
         submit.setOnAction(d ->
         {
-            if (searchComboBox.getValue().equalsIgnoreCase("Roll number"))
+            try {
+                if (searchComboBox.getValue() == null) {
+                    throw new IllegalArgumentException("Please select a search criteria.");
+                }
+                if (searchComboBox.getValue().equalsIgnoreCase("Roll number")) {
+                    TextField rollTextField = new TextField();
+                    rollTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
+                    Label label5 = new Label("Roll number:  ");
+                    label5.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+                    search.add(label5, 0, 800);
+
+                    search.add(rollTextField, 1, 800);
+
+                    Button submit1 = new Button("Submit");
+                    submit1.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
+                    search.add(submit1, 1, 1000);
+
+                    submit1.setOnAction(x ->
+                    {
+                        try {
+                            if (rollTextField.getText().isEmpty()) {
+                                throw new IllegalArgumentException("Please enter a roll number.");
+                            }
+                            List<String> data = readData();
+                            assert data != null;
+                            for (String line : data) {
+                                if (line.contains(rollTextField.getText())) {
+                                    String[] list = line.split(", ");
+                                    Label label = new Label(list[0]);
+                                    label.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(label, 1, 2000);
+
+                                    Label labelA = new Label(list[1]);
+                                    labelA.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelA, 1, 2200);
+
+                                    Label labelB = new Label(list[2]);
+                                    labelB.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelB, 1, 2400);
+
+                                    Label labelC = new Label(list[3]);
+                                    labelC.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelC, 1, 2600);
+
+                                    Label labelD = new Label(list[4]);
+                                    labelD.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelD, 1, 2800);
+
+                                    Label labelE = new Label(list[5]);
+                                    labelE.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelE, 1, 3000);
+
+                                    Label labelF = new Label("Email: " + list[6].split(": ")[1].split(" ")[0]);
+                                    labelF.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelF, 1, 3200);
+                                }
+                                Button close = new Button("CLOSE");
+                                close.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
+                                close.setOnAction(b ->
+                                {
+                                    stage.close();
+                                });
+                                search.add(close, 1, 3500);
+                            }
+                        } catch (Exception e)
+                        {
+                            Label submitted = new Label();
+                            submitted.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18;");
+                            submitted.setText("Error: " + e.getMessage());
+                            search.add(submitted,1,1500);
+                        }
+                    });
+
+                } else if(searchComboBox.getValue().equalsIgnoreCase("Email")){
+                    TextField emailTextField = new TextField();
+                    emailTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
+                    Label label6 = new Label("Email:  ");
+                    label6.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+                    search.add(label6, 0, 800);
+
+                    search.add(emailTextField, 1, 800);
+
+                    Button submit1 = new Button("Submit");
+                    submit1.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+                    search.add(submit1, 1, 1000);
+
+                    submit1.setOnAction(x ->
+                    {
+                        try {
+                            if (emailTextField.getText().isEmpty()) {
+                                throw new IllegalArgumentException("Please enter email.");
+                            }
+                            List<String> data = readData();
+                            assert data != null;
+                            for (String line : data) {
+                                if (line.contains(emailTextField.getText())) {
+                                    String[] list = line.split(", ");
+                                    Label label = new Label(list[0]);
+                                    label.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(label, 1, 2000);
+
+                                    Label labelA = new Label(list[1]);
+                                    labelA.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelA, 1, 2200);
+
+                                    Label labelB = new Label(list[2]);
+                                    labelB.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelB, 1, 2400);
+
+                                    Label labelC = new Label(list[3]);
+                                    labelC.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelC, 1, 2600);
+
+                                    Label labelD = new Label(list[4]);
+                                    labelD.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelD, 1, 2800);
+
+                                    Label labelE = new Label(list[5]);
+                                    labelE.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelE, 1, 3000);
+
+                                    Label labelF = new Label("Email: " + list[6].split(": ")[1].split(" ")[0]);
+                                    labelF.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                    search.add(labelF, 1, 3200);
+                                }
+                                Button close = new Button("CLOSE");
+                                close.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+
+                                close.setOnAction(b ->
+                                {
+                                    stage.close();
+                                });
+                                search.add(close, 1, 3500);
+                            }
+                        }catch (Exception e)
+                        {
+                            Label submitted = new Label();
+                            submitted.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18;");
+                            submitted.setText("Error: " + e.getMessage());
+                            search.add(submitted,1,1500);
+                        }
+                    });
+                }
+            } catch (Exception e)
             {
-                TextField rollTextField = new TextField();
-                rollTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-
-                Label label5 = new Label("Roll number:  ");
-                label5.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-                search.add(label5, 0, 800);
-
-                search.add(rollTextField, 1, 800);
-
-                Button submit1 = new Button("Submit");
-                submit1.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-
-                search.add(submit1, 1, 1000);
-
-                submit1.setOnAction(x ->
-                {
-                    List<String> data = readData();
-                    assert data != null;
-                    for(String line : data)
-                    {
-                        if(line.contains(rollTextField.getText()))
-                        {
-                            String [] list = line.split(", ");
-                            Label label = new Label(list[0]);
-                            label.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(label,1,2000);
-
-                            Label labelA = new Label(list[1]);
-                            labelA.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelA,1,2200);
-
-                            Label labelB = new Label(list[2]);
-                            labelB.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelB,1,2400);
-
-                            Label labelC = new Label(list[3]);
-                            labelC.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelC,1,2600);
-
-                            Label labelD = new Label(list[4]);
-                            labelD.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelD,1,2800);
-
-                            Label labelE = new Label(list[5]);
-                            labelE.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelE,1,3000);
-
-                            Label labelF = new Label("Email: " + list[6].split(": ")[1].split(" ")[0]);
-                            labelF.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelF,1,3200);
-                        }
-                        Button close = new Button("CLOSE");
-                        close.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-
-                        close.setOnAction(b ->
-                        {
-                            stage.close();
-                        });
-                        search.add(close,1,3500);
-                    }
-                });
-
-            } else  {
-                TextField emailTextField = new TextField();
-                emailTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-
-                Label label6 = new Label("Email:  ");
-                label6.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-                search.add(label6, 0, 800);
-
-                search.add(emailTextField, 1, 800);
-
-                Button submit1 = new Button("Submit");
-                submit1.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-                search.add(submit1, 1, 1000);
-
-                submit1.setOnAction(x ->
-                {
-                    List<String> data = readData();
-                    assert data != null;
-                    for(String line : data)
-                    {
-                        if(line.contains(emailTextField.getText()))
-                        {
-                            String [] list = line.split(", ");
-                            Label label = new Label(list[0]);
-                            label.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(label,1,2000);
-
-                            Label labelA = new Label(list[1]);
-                            labelA.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelA,1,2200);
-
-                            Label labelB = new Label(list[2]);
-                            labelB.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelB,1,2400);
-
-                            Label labelC = new Label(list[3]);
-                            labelC.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelC,1,2600);
-
-                            Label labelD = new Label(list[4]);
-                            labelD.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelD,1,2800);
-
-                            Label labelE = new Label(list[5]);
-                            labelE.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelE,1,3000);
-
-                            Label labelF = new Label("Email: " + list[6].split(": ")[1].split(" ")[0]);
-                            labelF.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            search.add(labelF,1,3200);
-                        }
-                        Button close = new Button("CLOSE");
-                        close.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
-
-                        close.setOnAction(b ->
-                        {
-                            stage.close();
-                        });
-                        search.add(close,1,3500);
-                    }
-                });
+                Label submitted = new Label();
+                submitted.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18;");
+                submitted.setText("Error: " + e.getMessage());
+                search.add(submitted,1,800);
             }
-
         });
 
 
@@ -451,100 +497,111 @@ public class SystemMethods {
 
         submitButton.setOnAction(c ->
                 {
-                    List<String> data = readData();
                     try {
-                        assert data != null;
-                        List<String> updatedLines = data.stream()
-                                .filter(line -> !line.contains(rollTextField.getText())).toList();
-
-                        Files.write(Path.of(filePath), updatedLines, StandardOpenOption.TRUNCATE_EXISTING);
-
-                    } catch (Exception e)
-                    {
-                        System.out.println("Error finding student.");
-                    }
-
-                    for (String line : data) {
-                        String[] list = line.split(", ");
-                        if (line.contains(rollTextField.getText())) {
-                            Label label = new Label("Name: ");
-                            label.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-                            update.add(label, 1, 900);
-
-                            TextField textField1 = new TextField(list[0].split(": ")[1]);
-                            textField1.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-                            update.add(textField1, 2, 900);
-
-                            Label label2 = new Label("Surname: ");
-                            label2.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-                            update.add(label2, 1, 1100);
-
-                            TextField textField2 = new TextField(list[1].split(": ")[1]);
-                            textField2.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-
-                            update.add(textField2, 2, 1100);
-
-                            Label label3 = new Label("Gender: ");
-                            label3.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-                            update.add(label3, 1, 1300);
-
-                            TextField textField3 = new TextField(list[2].split(": ")[1]);
-                            textField3.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-                            update.add(textField3, 2, 1300);
-
-                            Label label4 = new Label("DOB: ");
-                            label4.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-                            update.add(label4, 1, 1500);
-
-                            TextField textField4 = new TextField(list[3].split(": ")[1]);
-                            textField4.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-
-                            update.add(textField4, 2, 1500);
-
-                            Label label6 = new Label("Grade: ");
-                            label6.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-                            update.add(label6, 1, 1700);
-
-                            TextField textField5 = new TextField(list[4].split(": ")[1]);
-                            textField5.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-                            update.add(textField5, 2, 1700);
-
-                            Label label7 = new Label("Email: ");
-                            label7.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-                            update.add(label7, 1, 2100);
-
-                            TextField textField8 = new TextField(list[6].split(": ")[1].split(" ")[0]);
-                            textField8.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
-                            update.add(textField8, 2, 2100);
-
-                            Button updateData = new Button("Update Data");
-                            updateData.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
-                            update.add(updateData,1,2500);
-
-                            Label submitted = new Label();
-                            update.add(submitted, 1, 2700);
-
-                            updateData.setOnAction(a ->
-                            {
-                                Student student = new Student(textField1.getText(), textField2.getText(), textField3.getText(), textField4.getText(), textField5.getText(), rollTextField.getText(), textField8.getText());
-                                students.add(student);
-                                writeData(students);
-                                students.clear();
-
-                                submitted.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 18;");
-                                submitted.setText("Successfully updated student data!");
-
-                                Button ok = new Button("OK");
-                                ok.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-
-                                ok.setOnAction(b ->
-                                {
-                                    stage.close();
-                                });
-
-                                update.add(ok, 1, 2900);
-                            });
+                        if (rollTextField.getText().isEmpty()) {
+                            throw new IllegalArgumentException("Please enter a Roll Number.");
                         }
+
+                        List<String> data = readData();
+                        try {
+                            assert data != null;
+                            List<String> updatedLines = data.stream()
+                                    .filter(line -> !line.contains(rollTextField.getText())).toList();
+
+                            Files.write(Path.of(filePath), updatedLines, StandardOpenOption.TRUNCATE_EXISTING);
+
+                        } catch (Exception e) {
+                            System.out.println("Error finding student.");
+                        }
+
+                        for (String line : data) {
+                            String[] list = line.split(", ");
+                            if (line.contains(rollTextField.getText())) {
+                                Label label = new Label("Name: ");
+                                label.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+                                update.add(label, 1, 900);
+
+                                TextField textField1 = new TextField(list[0].split(": ")[1]);
+                                textField1.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+                                update.add(textField1, 2, 900);
+
+                                Label label2 = new Label("Surname: ");
+                                label2.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+                                update.add(label2, 1, 1100);
+
+                                TextField textField2 = new TextField(list[1].split(": ")[1]);
+                                textField2.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
+                                update.add(textField2, 2, 1100);
+
+                                Label label3 = new Label("Gender: ");
+                                label3.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+                                update.add(label3, 1, 1300);
+
+                                TextField textField3 = new TextField(list[2].split(": ")[1]);
+                                textField3.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+                                update.add(textField3, 2, 1300);
+
+                                Label label4 = new Label("DOB: ");
+                                label4.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+                                update.add(label4, 1, 1500);
+
+                                TextField textField4 = new TextField(list[3].split(": ")[1]);
+                                textField4.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
+                                update.add(textField4, 2, 1500);
+
+                                Label label6 = new Label("Grade: ");
+                                label6.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+                                update.add(label6, 1, 1700);
+
+                                TextField textField5 = new TextField(list[4].split(": ")[1]);
+                                textField5.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+                                update.add(textField5, 2, 1700);
+
+                                Label label7 = new Label("Email: ");
+                                label7.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+                                update.add(label7, 1, 2100);
+
+                                TextField textField8 = new TextField(list[6].split(": ")[1].split(" ")[0]);
+                                textField8.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+                                update.add(textField8, 2, 2100);
+
+                                Button updateData = new Button("Update Data");
+                                updateData.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                update.add(updateData, 1, 2500);
+
+                                Label submitted = new Label();
+                                update.add(submitted, 1, 2700);
+
+                                updateData.setOnAction(a ->
+                                {
+                                    Student student = new Student(textField1.getText(), textField2.getText(), textField3.getText(), textField4.getText(), textField5.getText(), rollTextField.getText(), textField8.getText());
+                                    students.add(student);
+                                    writeData(students);
+                                    students.clear();
+
+                                    submitted.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 18;");
+                                    submitted.setText("Successfully updated student data!");
+
+                                    Button ok = new Button("OK");
+                                    ok.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+
+                                    ok.setOnAction(b ->
+                                    {
+                                        stage.close();
+                                    });
+
+                                    update.add(ok, 1, 2900);
+                                });
+                            }
+                        }
+                    }catch (Exception e)
+                    {
+                        Label submitted = new Label();
+                        submitted.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18;");
+                        submitted.setText("Error: " + e.getMessage());
+                        update.add(submitted,1,1200);
                     }
                 });
 
