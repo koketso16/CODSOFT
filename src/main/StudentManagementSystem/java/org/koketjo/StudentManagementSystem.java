@@ -10,9 +10,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import org.koketjo.SystemMethods.*;
-
-
 public class StudentManagementSystem extends Application{
 
     @Override
