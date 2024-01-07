@@ -5,9 +5,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -56,15 +60,26 @@ public class SystemMethods {
     {
         GridPane details = new GridPane();
 
+        List<ImageView> imageViews = new ArrayList<>();
+        Image image = new Image("file:src/main/StudentManagementSystem/pictures/pp.png");
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(120);
+        imageView.setFitHeight(80);
+        imageViews.add(imageView);
+
+        details.add(imageView, 1, 10);
+
         TextField nameTextField = new TextField();
+        nameTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
 
         Label label = new Label("Name:  ");
         label.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-        details.add(label, 0, 10);
+        details.add(label, 0, 50);
 
-        details.add(nameTextField, 1, 10);
+        details.add(nameTextField, 1, 50);
 
         TextField surnameTextField = new TextField();
+        surnameTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
 
         Label label1 = new Label("Surname:  ");
         label1.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
@@ -73,7 +88,9 @@ public class SystemMethods {
         details.add(surnameTextField, 1, 100);
 
         ComboBox<String> genderComboBox = new ComboBox<>();
-        genderComboBox.getItems().addAll("Male", "Female", "Non-binary", "Prefer not to say", "Other");
+        genderComboBox.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
+        genderComboBox.getItems().addAll("Male", "Female", "Non-binary", "Prefer not to say");
 
         Label label3 = new Label("Gender:  ");
         label3.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
@@ -82,6 +99,7 @@ public class SystemMethods {
         details.add(genderComboBox, 1, 200);
 
         DatePicker dobTextField = new DatePicker();
+        dobTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
 
         Label label4 = new Label("Date of Birth:  ");
         label4.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
@@ -90,6 +108,7 @@ public class SystemMethods {
         details.add(dobTextField, 1, 300);
 
         TextField gradeTextField = new TextField();
+        gradeTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
 
         Label label2 = new Label("Grade:  ");
         label2.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
@@ -98,6 +117,7 @@ public class SystemMethods {
         details.add(gradeTextField, 1, 400);
 
         TextField rollTextField = new TextField();
+        rollTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
         Label label5 = new Label("Roll number:  ");
         label5.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
         details.add(label5, 0, 500);
@@ -105,6 +125,8 @@ public class SystemMethods {
         details.add(rollTextField, 1, 500);
 
         TextField emailTextField = new TextField();
+        emailTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
         Label label6 = new Label("Email:  ");
         label6.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
         details.add(label6, 0, 600);
@@ -131,7 +153,7 @@ public class SystemMethods {
             writeData(students);
             students.clear();
 
-            submitted.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+            submitted.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 20;");
             submitted.setText("Successfully added Student!");
 
             Button ok = new Button("OK");
@@ -151,15 +173,26 @@ public class SystemMethods {
     public static void removeStudent() {
         GridPane details = new GridPane();
 
+        List<ImageView> imageViews = new ArrayList<>();
+        Image image = new Image("file:src/main/StudentManagementSystem/pictures/delete.jpg");
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(120);
+        imageView.setFitHeight(80);
+        imageViews.add(imageView);
+
+        details.add(imageView, 1, 10);
+
         TextField nameTextField = new TextField();
+        nameTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
 
         Label label = new Label("Name:  ");
         label.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
-        details.add(label, 0, 10);
+        details.add(label, 0, 60);
 
-        details.add(nameTextField, 1, 10);
+        details.add(nameTextField, 1, 60);
 
         TextField surnameTextField = new TextField();
+        surnameTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
 
         Label label1 = new Label("Surname:  ");
         label1.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
@@ -168,6 +201,8 @@ public class SystemMethods {
         details.add(surnameTextField, 1, 100);
 
         TextField rollTextField = new TextField();
+        rollTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
         Label label5 = new Label("Roll number:  ");
         label5.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
         details.add(label5, 0, 500);
@@ -175,7 +210,7 @@ public class SystemMethods {
         details.add(rollTextField, 1, 500);
 
         Stage stage = new Stage();
-        Scene scene = new Scene(details, 400, 500);
+        Scene scene = new Scene(details, 400, 320);
         stage.setTitle("Remove Student");
         stage.setScene(scene);
         stage.show();
@@ -204,7 +239,7 @@ public class SystemMethods {
                 System.out.println("Error removing student.");
             }
 
-            submitted.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+            submitted.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 18;");
             submitted.setText("Successfully removed Student!");
 
             Button ok = new Button("OK");
@@ -221,7 +256,18 @@ public class SystemMethods {
 
     public static void searchStudent() {
         GridPane search = new GridPane();
+
+        List<ImageView> imageViews = new ArrayList<>();
+        Image image = new Image("file:src/main/StudentManagementSystem/pictures/files.jpg");
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(180);
+        imageView.setFitHeight(120);
+        imageViews.add(imageView);
+
+        search.add(imageView, 1, 10);
+
         ComboBox<String> searchComboBox = new ComboBox<>();
+        searchComboBox.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
         searchComboBox.getItems().addAll("Roll number", "Email");
 
         Label label3 = new Label("Search by:  ");
@@ -236,6 +282,7 @@ public class SystemMethods {
         stage.show();
 
         Button submit = new Button("Submit");
+        submit.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
         search.add(submit, 1, 500);
 
         submit.setOnAction(d ->
@@ -243,6 +290,8 @@ public class SystemMethods {
             if (searchComboBox.getValue().equalsIgnoreCase("Roll number"))
             {
                 TextField rollTextField = new TextField();
+                rollTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
                 Label label5 = new Label("Roll number:  ");
                 label5.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
                 search.add(label5, 0, 800);
@@ -250,6 +299,8 @@ public class SystemMethods {
                 search.add(rollTextField, 1, 800);
 
                 Button submit1 = new Button("Submit");
+                submit1.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
                 search.add(submit1, 1, 1000);
 
                 submit1.setOnAction(x ->
@@ -290,7 +341,7 @@ public class SystemMethods {
                             search.add(labelF,1,3200);
                         }
                         Button close = new Button("CLOSE");
-                        close.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 16;");
+                        close.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
 
                         close.setOnAction(b ->
                         {
@@ -302,6 +353,8 @@ public class SystemMethods {
 
             } else  {
                 TextField emailTextField = new TextField();
+                emailTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
                 Label label6 = new Label("Email:  ");
                 label6.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
                 search.add(label6, 0, 800);
@@ -309,6 +362,7 @@ public class SystemMethods {
                 search.add(emailTextField, 1, 800);
 
                 Button submit1 = new Button("Submit");
+                submit1.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
                 search.add(submit1, 1, 1000);
 
                 submit1.setOnAction(x ->
@@ -349,7 +403,7 @@ public class SystemMethods {
                             search.add(labelF,1,3200);
                         }
                         Button close = new Button("CLOSE");
-                        close.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 16;");
+                        close.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
 
                         close.setOnAction(b ->
                         {
@@ -368,9 +422,19 @@ public class SystemMethods {
     public static void updateStudentData() {
         GridPane update = new GridPane();
 
+        List<ImageView> imageViews = new ArrayList<>();
+        Image image = new Image("file:src/main/StudentManagementSystem/pictures/edit.jpg");
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(140);
+        imageView.setFitHeight(100);
+        imageViews.add(imageView);
+        update.add(imageView,1,10);
+
         TextField rollTextField = new TextField();
-        Label label5 = new Label("Enter Roll number:  ");
-        label5.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
+        rollTextField.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
+        Label label5 = new Label("Enter Roll Number:  ");
+        label5.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18;");
         update.add(label5, 0, 500);
 
         update.add(rollTextField, 1, 700);
@@ -380,7 +444,7 @@ public class SystemMethods {
         update.add(submitButton, 1, 800);
 
         Stage stage = new Stage();
-        Scene scene = new Scene(update, 600, 500);
+        Scene scene = new Scene(update, 700, 600);
         stage.setTitle("Update Data");
         stage.setScene(scene);
         stage.show();
@@ -407,14 +471,17 @@ public class SystemMethods {
                             label.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
                             update.add(label, 1, 900);
 
-                            TextField textField = new TextField(list[0].split(": ")[1]);
-                            update.add(textField, 2, 900);
+                            TextField textField1 = new TextField(list[0].split(": ")[1]);
+                            textField1.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+                            update.add(textField1, 2, 900);
 
                             Label label2 = new Label("Surname: ");
                             label2.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 16;");
                             update.add(label2, 1, 1100);
 
                             TextField textField2 = new TextField(list[1].split(": ")[1]);
+                            textField2.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
                             update.add(textField2, 2, 1100);
 
                             Label label3 = new Label("Gender: ");
@@ -422,6 +489,7 @@ public class SystemMethods {
                             update.add(label3, 1, 1300);
 
                             TextField textField3 = new TextField(list[2].split(": ")[1]);
+                            textField3.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
                             update.add(textField3, 2, 1300);
 
                             Label label4 = new Label("DOB: ");
@@ -429,6 +497,8 @@ public class SystemMethods {
                             update.add(label4, 1, 1500);
 
                             TextField textField4 = new TextField(list[3].split(": ")[1]);
+                            textField4.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
+
                             update.add(textField4, 2, 1500);
 
                             Label label6 = new Label("Grade: ");
@@ -436,6 +506,7 @@ public class SystemMethods {
                             update.add(label6, 1, 1700);
 
                             TextField textField5 = new TextField(list[4].split(": ")[1]);
+                            textField5.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
                             update.add(textField5, 2, 1700);
 
                             Label label7 = new Label("Email: ");
@@ -443,6 +514,7 @@ public class SystemMethods {
                             update.add(label7, 1, 2100);
 
                             TextField textField8 = new TextField(list[6].split(": ")[1].split(" ")[0]);
+                            textField8.setStyle("-fx-border-color: green; -fx-border-width: 2; -fx-border-radius: 5; -fx-font-weight: bold; -fx-font-size: 16");
                             update.add(textField8, 2, 2100);
 
                             Button updateData = new Button("Update Data");
@@ -454,12 +526,12 @@ public class SystemMethods {
 
                             updateData.setOnAction(a ->
                             {
-                                Student student = new Student(textField.getText(), textField2.getText(), textField3.getText(), textField4.getText(), textField5.getText(), rollTextField.getText(), textField8.getText());
+                                Student student = new Student(textField1.getText(), textField2.getText(), textField3.getText(), textField4.getText(), textField5.getText(), rollTextField.getText(), textField8.getText());
                                 students.add(student);
                                 writeData(students);
                                 students.clear();
 
-                                submitted.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 16;");
+                                submitted.setStyle("-fx-text-fill: green; -fx-font-weight: bold; -fx-font-size: 18;");
                                 submitted.setText("Successfully updated student data!");
 
                                 Button ok = new Button("OK");
@@ -502,6 +574,7 @@ public class SystemMethods {
 
     public static void displayAllStudents() {
         TableView<Student> studentTable = new TableView<>();
+        studentTable.setStyle("-fx-font-style: italic; -fx-font-weight: bold; -fx-font-size: 15;");
 
         TableColumn<Student, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -545,7 +618,7 @@ public class SystemMethods {
             System.out.println("Error writing to table.");
         }
 
-        Scene scene = new Scene(studentTable, 700, 500);
+        Scene scene = new Scene(studentTable, 750, 450);
         Stage stage = new Stage();
         stage.setTitle("Student Database");
         stage.setScene(scene);

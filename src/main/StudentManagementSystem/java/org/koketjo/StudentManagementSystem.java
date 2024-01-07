@@ -10,7 +10,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import static org.koketjo.SystemMethods.*;
+import org.koketjo.SystemMethods.*;
 
 
 public class StudentManagementSystem extends Application{
@@ -20,7 +20,7 @@ public class StudentManagementSystem extends Application{
 
         GridPane grid = new GridPane();
 
-        Image backgroundImage = new Image("file:src/main/StudentManagementSystem/java/org/koketjo/data-storage.jpg");
+        Image backgroundImage = new Image("file:src/main/StudentManagementSystem/pictures/data-storage.jpg");
 
         BackgroundImage background = new BackgroundImage(
                 backgroundImage,
@@ -43,7 +43,7 @@ public class StudentManagementSystem extends Application{
         addStudentButton.setOnAction(e -> {
             try
             {
-                addStudent();
+                SystemMethods.addStudent();
 
             } catch (NumberFormatException ex)
             {
@@ -56,7 +56,7 @@ public class StudentManagementSystem extends Application{
         removeStudentButton.setOnAction(e -> {
             try
             {
-                removeStudent();
+                SystemMethods.removeStudent();
 
             } catch (NumberFormatException ex)
             {
@@ -70,7 +70,7 @@ public class StudentManagementSystem extends Application{
         searchStudentButton.setOnAction(e -> {
             try
             {
-                searchStudent();
+                SystemMethods.searchStudent();
 
             } catch (NumberFormatException ex)
             {
@@ -84,7 +84,7 @@ public class StudentManagementSystem extends Application{
         displayAllStudentButton.setOnAction(e -> {
             try
             {
-                displayAllStudents();
+                SystemMethods.displayAllStudents();
 
             } catch (NumberFormatException ex)
             {
@@ -97,7 +97,8 @@ public class StudentManagementSystem extends Application{
         updateStudentDataButton.setOnAction(e -> {
             try
             {
-                updateStudentData();
+                SystemMethods.updateStudentData();
+
             } catch (NumberFormatException ex)
             {
                 System.out.println("Error updating student data.");
@@ -160,7 +161,7 @@ public class StudentManagementSystem extends Application{
         grid.add(displayAllStudentButton,0,2000);
         grid.add(quitButton, 1, 800);
 
-        Scene scene = new Scene(grid, 700, 400);
+        Scene scene = new Scene(grid, 800, 400);
         stage.setTitle("Student-Management-System");
         stage.setScene(scene);
         stage.show();
